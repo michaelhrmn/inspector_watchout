@@ -86,21 +86,21 @@
         function addClicker(marker, content) {
             google.maps.event.addListener(marker, 'click', function() {
             
-            if (infowindow) {infowindow.close();}
-            infowindow = new google.maps.InfoWindow({content: content});
-            infowindow.open(map, marker);
+            if (infowin) {infowin.close();}
+            infowin = new google.maps.InfoWindow({content: content});
+            infowin.open(map, marker);
             
             });
         }
 
       }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
+      function handleLocationError(browserHasGeolocation, infowin, pos) {
+        infowin.setPosition(pos);
+        infowin.setContent(browserHasGeolocation ?
                               'Error: The Geolocation service failed.' :
                               'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
+        infowin.open(map);
       }
 
 
