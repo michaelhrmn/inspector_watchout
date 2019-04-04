@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    
+    <script>
+
+      var map, infoWindow;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 32.0703134, lng: 34.7632773},
+          zoom: 10
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(obj.latitude,obj.longitude),
+            map: map,
+            icon: "http://intrpx.com/etc/cop-sm.png",
+            title: obj.title // this works, giving the marker a title with the correct title
+            });
+
+//            infoWindow.setPosition(pos);
+//            infoWindow.setContent(pos);
+//            infoWindow.open(map);
+            map.setCenter(pos);
+            map.setZoom(16);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        var json = [{"id":48,"title":"Helgelandskysten","longitude":"12.63376","latitude":"66.02219"},{"id":46,"title":"Tysfjord","longitude":"16.50279","latitude":"68.03515"},{"id":44,"title":"Sledehunds-ekspedisjon","longitude":"7.53744","latitude":"60.08929"},{"id":43,"title":"Amundsens sydpolferd","longitude":"11.38411","latitude":"62.57481"},{"id":39,"title":"Vikingtokt","longitude":"6.96781","latitude":"60.96335"},{"id":6,"title":"Tungtvann- sabotasjen","longitude":"8.49139","latitude":"59.87111"}];
+
+            // Looping through all the entries from the JSON data
+        for(var i = 0; i < json.length; i++) {
+            
+            // Current object
+            var obj = json[i];
+
+            // Adding a new marker for the object
+            var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(obj.latitude,obj.longitude),
+            map: map,
+            icon: "http://intrpx.com/etc/cop-sm.png",
+            title: obj.title // this works, giving the marker a title with the correct title
+            });
+            
+            // Adding a new info window for the object
+            var clicker = addClicker(marker, obj.title);
+        
+
+        } // end loop
+        
+        
+        // Adding a new click event listener for the object
+        function addClicker(marker, content) {
+            google.maps.event.addListener(marker, 'click', function() {
+            
+            if (infowindow) {infowindow.close();}
+            infowindow = new google.maps.InfoWindow({content: content});
+            infowindow.open(map, marker);
+            
+            });
+        }
+
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjrD75uWNDnBYPwpko9znXMNpOqLsHyMg&callback=initMap">
+    </script>
+  </body>
+</html>
